@@ -1,14 +1,20 @@
 .sign-in {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	height: 100vh;
 }
 
+.sign-in .title-section {
+	margin: 20vh 0 60px;
+	font-weight: 100;
+}
+
 .sign-in .title {
-	font-size: 42px;
-	margin-bottom: 20px;
+	font-size: 100px;
+	text-transform: uppercase;
+	font-weight: 100;
 }
 
 .sign-in-form {
@@ -16,6 +22,8 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	position: relative;
+	width: 100%;
 }
 
 .sign-in-form input {
@@ -30,4 +38,9 @@
 .sign-in-form .btn {
 	margin-top: 10px;
 	width: 100px;
+}
+
+.sign-in-form .error-message {
+	width: 100%;
+	margin-top: -25px;
 }

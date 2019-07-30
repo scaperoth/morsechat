@@ -13,14 +13,13 @@ import './ChatPage.css';
 class ChatPage extends Component {
 	state = {
 		loggedin: false,
+		securityToken: '',
 		username: '',
 		message: '',
 		messages: []
 	}
 
-	componentDidMount = () => {
-		this.socket = io(config.morseSocketURL);
-	}
+	componentDidMount = () => {}
 
 	/**
 	 * saves form field to state based on name and value
@@ -37,7 +36,7 @@ class ChatPage extends Component {
 	 */
 	signInFormSubmit = (e) => {
 		e.preventDefault();
-		this.signIn();
+		this.connectSocketsAndLogin();
 	}
 
 	/**
@@ -45,24 +44,51 @@ class ChatPage extends Component {
 	 * This includes setting logged in state and subscibing
 	 * to messages
 	 */
-	signIn = () => {
+	connectSocketsAndLogin = () => {
 
-		this.socket.emit('CONNECT', {
-			user: this.state.username
-		});
+		try {
+			this.socket = io(config.morseSocketURL);
+
+			this.socket.on('disconnect', () => {
+				this.socket.close();
+				this.setState({ loggedin: false });
+			});
+
+			this.socket.on('connect_error', () => {
+				this.setState({ error: 'Unable to connect at this time. Please try again later.' });
+				this.socket.close();
+			});
+
+			this.socket.emit('CONNECT', {
+				username: this.state.username
+			}, this.signIn);
+
+		} catch (err) {
+			console.log(err);
+			this.socket.close();
+		}
+	}
+
+	signIn = (data) => {
+
+		if (data.error) {
+			this.setState({ error: data.error });
+			return;
+		}
 
 		this.setState({ loggedin: true });
+		this.setState({ securityToken: data.token });
 
 		this.socket.on('USER_CONNECTED', (data) => {
-			this.addMessage({ connected: data.user });
+			this.addMessage({ connected: data.username });
 		});
 
 		this.socket.on('USER_DISCONNECTED', (data) => {
-			this.addMessage({ disconnected: true });
+			this.addMessage({ disconnected: data.username });
 		});
 
 		this.socket.on('RECEIVE_MESSAGE', (data) => {
-			this.addMessage({...data, encrypted: true});
+			this.addMessage({ ...data, encrypted: true });
 		});
 	}
 
@@ -72,8 +98,9 @@ class ChatPage extends Component {
 	sendMessage = e => {
 		e.preventDefault();
 		this.socket.emit('SEND_MESSAGE', {
-			author: this.state.username,
-			message: this.state.message
+			username: this.state.username,
+			message: this.state.message,
+			token: this.state.securityToken
 		});
 		this.setState({ message: '' });
 	}
@@ -129,15 +156,17 @@ class ChatPage extends Component {
 			username,
 			messages,
 			message,
-			loggedin
+			loggedin,
+			error
 		} = this.state;
 
 		return (
 			<div className={`chat`}>
-				{ !loggedin && <SignIn onSubmit={this.signInFormSubmit} onChange={this.onChange} username={username}/> }
+				{ !loggedin && <SignIn onSubmit={this.signInFormSubmit} onChange={this.onChange} username={username} error={error}/> }
 				{ loggedin > 0 &&
 					<div className={`chat-control`}>
 						<h2 className={`title`}>Current Channel</h2>
+						<p>Username: {username}</p>
 						<MessageList messages={messages} currentUser={username} decrypt={this.decryptMessage} encrypt={this.encryptMessage}/>
 						<ChatForm onSubmit={this.sendMessage} onChange={this.onChange} username={username} message={message}/>
 					</div>

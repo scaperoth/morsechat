@@ -5,18 +5,25 @@ import { Form, Input, Button } from 'reactstrap';
 
 import './SignIn.css';
 
-const SignIn = ({ onSubmit, onChange, username }) => (
+const SignIn = ({ onSubmit, onChange, username, error = false }) => (
 	<div className={`sign-in`}>
-		<h2 className={`title`}>Morse Chat</h2>
+		<div className={`title-section`}>
+			<h2 className={`title`}>Morse Chat</h2>
+			<p className={`subtitle`}>Login in with any username. No password needed. Nothing is stored.</p>
+		</div>
 		<Form className={`sign-in-form`} onSubmit={onSubmit}>
-			<Input placeholder={`username`} autoFocus value={username} name={`username`} onChange={onChange}/>
+			{error.length && <p className={`text-danger error-message`}>{error}</p>}
+			<Input placeholder={`username`} className={error ? 'error': ''} autoFocus value={username} name={`username`} onChange={onChange}/>
 			<Button type={`submit`} color={`primary`}>Login</Button>
 		</Form>
 	</div>
 );
 
 SignIn.propTypes = {
-	onSubmit: PropTypes.func.isRequired
+	onSubmit: PropTypes.func.isRequired,
+	onChange: PropTypes.func.isRequired,
+	username: PropTypes.string.isRequired,
+	error: PropTypes.string
 };
 
 export default SignIn;

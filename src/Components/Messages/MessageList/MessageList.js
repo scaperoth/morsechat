@@ -31,13 +31,13 @@ const MessageList = ({ messages, currentUser, decrypt, encrypt }) => {
 		<div className="message-list">
 			{messages.map((m, idx) => {
 
-				[ showAuthor, userGroup ] = shouldShowAuthor(m.author, userGroup);
+				[ showAuthor, userGroup ] = shouldShowAuthor(m.username, userGroup);
 
 				return (
 					<div key={idx}>
-						{ m.message && <Message {...m} onClick={() => m.encrypted ? decrypt(idx) : encrypt(idx)} showAuthor={showAuthor} isAuthor={currentUser === m.author}/>}
+						{ m.message && <Message {...m} onClick={() => m.encrypted ? decrypt(idx) : encrypt(idx)} showAuthor={showAuthor} isAuthor={currentUser === m.username}/>}
 						{ m.connected && currentUser !== m.connected && <p className={`connection-message`}>User {m.connected} Connected!</p>}
-						{ m.disconnected && currentUser !== m.disconnected && <p className={`connection-message`}>User Disonnected!</p>}
+						{ m.disconnected && currentUser !== m.disconnected && <p className={`connection-message`}>User {m.disconnected} Disonnected!</p>}
 					</div>
 				)
 			})}
