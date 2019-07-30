@@ -9,7 +9,7 @@ const SignIn = ({ onSubmit, onChange, username }) => (
 	<div className={`sign-in`}>
 		<h2 className={`title`}>Morse Chat</h2>
 		<Form className={`sign-in-form`} onSubmit={onSubmit}>
-			<Input placeholder={`username`} value={username} name={`username`} onChange={onChange}/>
+			<Input placeholder={`username`} autoFocus value={username} name={`username`} onChange={onChange}/>
 			<Button type={`submit`} color={`primary`}>Login</Button>
 		</Form>
 	</div>

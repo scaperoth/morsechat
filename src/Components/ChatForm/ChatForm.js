@@ -7,7 +7,7 @@ import './ChatForm.css';
 
 const ChatForm = ({ onSubmit, onChange, username, message }) => (
 	<Form className={`chat-form`} onSubmit={onSubmit}>
-		<Input type={`text`} value={message} name={'message'} onChange={onChange}/>
+		<Input type={`text`} autoFocus value={message} name={'message'} onChange={onChange}/>
 		<Button type={`submit`} color={`primary`}>Send</Button>
 	</Form>
 );
