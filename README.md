@@ -4,6 +4,8 @@ Chat application created using react that requires [morse chat api](https://gith
 
 The way the chat works is it sends a socket message to the server with socket.io. The message sent is turned into morse code and returned to client where it is added to the message list. 
 
+![](morsechat-preview.gif)
+
 ## Requirements
 - Node v10.12
 - Yarn
