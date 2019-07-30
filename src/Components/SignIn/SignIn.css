@@ -10,6 +10,7 @@
 .sign-in .title-section {
 	margin: 10vh 0 20px;
 	font-weight: 100;
+	text-align: center;
 }
 
 .sign-in .title {
@@ -47,6 +48,7 @@
 	width: 100%;
 	margin-top: -25px;
 	margin-bottom: 2px;
+	text-align: center;
 }
 
 .sign-in-form .error {
