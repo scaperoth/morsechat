@@ -1,7 +1,8 @@
 import axios from 'axios';
+import config from '../app.config';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080'
+  baseURL: config.morseApiURL
 });
 
 export default instance;

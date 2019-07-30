@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import io from "socket.io-client";
+import config from '../../app.config';
 
 import { decrypt, encrypt } from '../../Actions/MorseActions';
 
@@ -18,7 +19,7 @@ class ChatPage extends Component {
 	}
 
 	componentDidMount = () => {
-		this.socket = io('localhost:8080');
+		this.socket = io(config.morseSocketURL);
 	}
 
 	onChange = (e) => {
