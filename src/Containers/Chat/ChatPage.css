@@ -1,4 +1,13 @@
+.chat {
+	padding-bottom: 20px;
+}
+
 .chat-control {
 	max-width: 500px;
-	margin: 20px auto;
+	margin: 0 auto;
+	padding-top: 20px;
+}
+
+.chat-control .title, .chat-control .meta-data {
+	text-align: center;
 }

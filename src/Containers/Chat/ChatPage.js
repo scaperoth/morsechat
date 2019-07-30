@@ -23,13 +23,25 @@ class ChatPage extends Component {
 	componentDidMount = () => {}
 
 	/**
-	 * saves form field to state based on name and value
+	 * saves values from sign in form to state
 	 */
-	onChange = (e) => {
+	onSignInChange = (e) => {
 		const { name, value } = e.target;
 		this.setState({
 			[name]: value,
 			error: false
+		});
+	}
+
+	/**
+	 * saves values from chat form to state
+	 * this is separate from sign in form in case
+	 * we want to track when someone is typing later
+	 */
+	onChatChange = (e) => {
+		const { name, value } = e.target;
+		this.setState({
+			[name]: value
 		});
 	}
 
@@ -181,14 +193,14 @@ class ChatPage extends Component {
 		} = this.state;
 
 		return (
-			<div className={`chat`}>
-				{ !loggedin && <SignIn onSubmit={this.signInFormSubmit} onChange={this.onChange} username={username} error={error}/> }
-				{ loggedin > 0 &&
+			<div className={`chat ${loggedin ? 'chat-bg': 'sign-in-bg'}`}>
+				{ !loggedin && <SignIn onSubmit={this.signInFormSubmit} onChange={this.onSignInChange} username={username} error={error}/> }
+				{ loggedin === true &&
 					<div className={`chat-control`}>
 						<h2 className={`title`}>Morse Chat Room</h2>
-						<p>Your Username: <b>{username}</b> | {numSignedIn - 1} Other Users</p>
+						<p className={`meta-data`}>Your Username: <b>{username}</b> | {numSignedIn - 1} Other Users</p>
 						<MessageList messages={messages} currentUser={username} decrypt={this.decryptMessage} encrypt={this.encryptMessage}/>
-						<ChatForm onSubmit={this.sendMessage} onChange={this.onChange} username={username} message={message}/>
+						<ChatForm onSubmit={this.sendMessage} onChange={this.onChatChange} username={username} message={message}/>
 					</div>
 				}
 			</div>

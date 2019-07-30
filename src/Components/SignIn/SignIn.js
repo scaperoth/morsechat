@@ -23,7 +23,10 @@ SignIn.propTypes = {
 	onSubmit: PropTypes.func.isRequired,
 	onChange: PropTypes.func.isRequired,
 	username: PropTypes.string.isRequired,
-	error: PropTypes.string
+	error: PropTypes.oneOfType([
+		PropTypes.bool,
+		PropTypes.string
+	])
 };
 
 export default SignIn;
