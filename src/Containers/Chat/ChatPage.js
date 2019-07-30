@@ -75,7 +75,7 @@ class ChatPage extends Component {
 		const messageToDecrypt = messages[idx].message;
 		try {
 			const { data: response } = await decrypt(messageToDecrypt);
-			messages[idx].message = response;
+			messages[idx].message = response.message;
 			messages[idx].encrypted = false;
 			this.setState({ messages });
 		} catch (err) {
@@ -88,7 +88,7 @@ class ChatPage extends Component {
 		const messageToDecrypt = messages[idx].message;
 		try {
 			const { data: response } = await encrypt(messageToDecrypt);
-			messages[idx].message = response;
+			messages[idx].message = response.message;
 			messages[idx].encrypted = true;
 			this.setState({ messages });
 		} catch (err) {
