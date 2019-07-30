@@ -22,6 +22,9 @@ class ChatPage extends Component {
 		this.socket = io(config.morseSocketURL);
 	}
 
+	/**
+	 * saves form field to state based on name and value
+	 */
 	onChange = (e) => {
 		const { name, value } = e.target;
 		this.setState({
@@ -29,11 +32,19 @@ class ChatPage extends Component {
 		});
 	}
 
+	/**
+	 * handle form submit from signin
+	 */
 	signInFormSubmit = (e) => {
 		e.preventDefault();
 		this.signIn();
 	}
 
+	/**
+	 * perform all that needs to happen on sign in.
+	 * This includes setting logged in state and subscibing
+	 * to messages
+	 */
 	signIn = () => {
 
 		this.socket.emit('CONNECT', {
@@ -55,6 +66,9 @@ class ChatPage extends Component {
 		});
 	}
 
+	/**
+	 * send a message to all users
+	 */
 	sendMessage = e => {
 		e.preventDefault();
 		this.socket.emit('SEND_MESSAGE', {
@@ -64,12 +78,21 @@ class ChatPage extends Component {
 		this.setState({ message: '' });
 	}
 
+	/**
+	 * add a message to the output screen and
+	 * scroll window down to the bottom
+	 */
 	addMessage = data => {
 		this.setState({ messages: [...this.state.messages, data] });
 		const listContainer = document.getElementsByClassName('message-list')[0];
 		listContainer.scrollTop = listContainer.scrollHeight;
 	};
 
+	/**
+	 * take index of message to decrypt and call api then, with response,
+	 * update the message list
+	 * @param {Number} idx index of string to encrypt in message list
+	 */
 	decryptMessage = async (idx) => {
 		const { messages } = this.state;
 		const messageToDecrypt = messages[idx].message;
@@ -83,6 +106,11 @@ class ChatPage extends Component {
 		}
 	}
 
+	/**
+	 * take index of message to encrypt and call api then, with response,
+	 * update the message list
+	 * @param {Number} idx index of string to encrypt in message list
+	 */
 	encryptMessage = async (idx) => {
 		const { messages } = this.state;
 		const messageToDecrypt = messages[idx].message;
