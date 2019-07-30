@@ -20,7 +20,19 @@ class ChatPage extends Component {
 		numSignedIn: 0
 	}
 
-	componentDidMount = () => {}
+	componentDidMount = () => {
+		this.title = document.title;
+		this.focused = true;
+		this.missedMessages = 0;
+		window.onfocus = () => {
+			document.title = this.title;
+			this.focused = true;
+			this.missedMessages = 0;
+		};
+		window.onblur = () => {
+			this.focused = false;
+		};
+	}
 
 	/**
 	 * saves values from sign in form to state
@@ -143,6 +155,10 @@ class ChatPage extends Component {
 		this.setState({ messages: [...this.state.messages, data] });
 		const listContainer = document.getElementsByClassName('message-list')[0];
 		listContainer.scrollTop = listContainer.scrollHeight;
+		if(!this.focused){
+			this.missedMessages++;
+			document.title = `(${this.missedMessages}) ${this.title}`;
+		}
 	};
 
 	/**
