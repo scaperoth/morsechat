@@ -7,7 +7,6 @@
 	position: relative;
 	max-width: 45%;
 	margin-bottom: 5px;
-	min-width: 100px;
 }
 
 .message-box:hover {
