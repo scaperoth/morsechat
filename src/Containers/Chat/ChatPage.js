@@ -118,7 +118,6 @@ class ChatPage extends Component {
 		});
 
 		this.socket.on('RECEIVE_MESSAGE', (data) => {
-			console.log('data', data);
 			this.addMessage({ ...data, encrypted: true });
 		});
 	}
