@@ -35,3 +35,5 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 - check and protect against multiple users with same username logging in
 - clear history after so many messages
+- error handling
+- UI pass
