@@ -185,7 +185,7 @@ class ChatPage extends Component {
 				{ !loggedin && <SignIn onSubmit={this.signInFormSubmit} onChange={this.onChange} username={username} error={error}/> }
 				{ loggedin > 0 &&
 					<div className={`chat-control`}>
-						<h2 className={`title`}>Current Channel</h2>
+						<h2 className={`title`}>Morse Chat Room</h2>
 						<p>Your Username: <b>{username}</b> | {numSignedIn - 1} Other Users</p>
 						<MessageList messages={messages} currentUser={username} decrypt={this.decryptMessage} encrypt={this.encryptMessage}/>
 						<ChatForm onSubmit={this.sendMessage} onChange={this.onChange} username={username} message={message}/>
