@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import io from "socket.io-client";
 
+import { decrypt, encrypt } from '../../Actions/MorseActions';
+
 import SignIn from '../../Components/SignIn';
 import ChatForm from '../../Components/ChatForm';
 import { MessageList } from '../../Components/Messages';
@@ -48,7 +50,7 @@ class ChatPage extends Component {
 		});
 
 		this.socket.on('RECEIVE_MESSAGE', (data) => {
-			this.addMessage(data);
+			this.addMessage({...data, encrypted: true});
 		});
 	}
 
@@ -67,6 +69,32 @@ class ChatPage extends Component {
 		listContainer.scrollTop = listContainer.scrollHeight;
 	};
 
+	decryptMessage = async (idx) => {
+		const { messages } = this.state;
+		const messageToDecrypt = messages[idx].message;
+		try {
+			const { data: response } = await decrypt(messageToDecrypt);
+			messages[idx].message = response;
+			messages[idx].encrypted = false;
+			this.setState({ messages });
+		} catch (err) {
+			console.log('could not decrypt message!');
+		}
+	}
+
+	encryptMessage = async (idx) => {
+		const { messages } = this.state;
+		const messageToDecrypt = messages[idx].message;
+		try {
+			const { data: response } = await encrypt(messageToDecrypt);
+			messages[idx].message = response;
+			messages[idx].encrypted = true;
+			this.setState({ messages });
+		} catch (err) {
+			console.log('could not encrypt message!');
+		}
+	}
+
 	render = () => {
 		const {
 			username,
@@ -81,7 +109,7 @@ class ChatPage extends Component {
 				{ loggedin > 0 &&
 					<div className={`chat-control`}>
 						<h2 className={`title`}>Current Channel</h2>
-						<MessageList messages={messages} currentUser={username}/>
+						<MessageList messages={messages} currentUser={username} decrypt={this.decryptMessage} encrypt={this.encryptMessage}/>
 						<ChatForm onSubmit={this.sendMessage} onChange={this.onChange} username={username} message={message}/>
 					</div>
 				}
