@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import './Message.css';
 
 const Message = ({ username, message, showAuthor, isAuthor, onClick }) => (
-	<div onClick={onClick} className={`message-container ${isAuthor ? 'my-message' : 'their-message'}`}>
-		<div className={`message-box ${showAuthor ? 'mt-3' : ''}`}>
+	<div className={`message-container ${isAuthor ? 'my-message' : 'their-message'}`}>
+		<div onClick={onClick} className={`message-box ${showAuthor ? 'mt-3' : ''}`}>
 			{
 				showAuthor && <div className={`message-author`}>
 					{username}
