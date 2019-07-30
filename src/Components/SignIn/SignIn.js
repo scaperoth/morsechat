@@ -14,7 +14,7 @@ const SignIn = ({ onSubmit, onChange, username, error = false }) => (
 		<Form className={`sign-in-form`} onSubmit={onSubmit}>
 			{error.length && <p className={`text-danger error-message`}>{error}</p>}
 			<Input placeholder={`Example: CoolPerson`} className={error ? 'error': ''} autoFocus value={username} name={`username`} onChange={onChange}/>
-			<Button type={`submit`} color={`primary`}>Login</Button>
+			<Button type={`submit`} color={`primary`}>Let's Go!</Button>
 		</Form>
 	</div>
 );
