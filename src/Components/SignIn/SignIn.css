@@ -4,17 +4,19 @@
 	justify-content: flex-start;
 	align-items: center;
 	height: 100vh;
+	min-height: 700px;
 }
 
 .sign-in .title-section {
-	margin: 20vh 0 60px;
+	margin: 10vh 0 20px;
 	font-weight: 100;
 }
 
 .sign-in .title {
-	font-size: 100px;
+	font-size: 25vw;
 	text-transform: uppercase;
 	font-weight: 100;
+	width: 100%;
 }
 
 .sign-in-form {
@@ -29,10 +31,11 @@
 .sign-in-form input {
 	min-height: 50px;
 	width: 300px;
-	font-size: 24px;
+	font-size: 18px;
 	padding: 0px 10px;
 	border-radius: 20px;
 	border: 1px solid #ccc;
+	font-weight: 100;
 }
 
 .sign-in-form .btn {
@@ -43,4 +46,22 @@
 .sign-in-form .error-message {
 	width: 100%;
 	margin-top: -25px;
+	margin-bottom: 2px;
+}
+
+.sign-in-form .error {
+	border: 1px solid #d00;
+}
+
+@media (min-width: 600px) {
+	.sign-in .title-section {
+		margin: 20vh 0 20px;
+		font-weight: 100;
+	}
+
+	.sign-in .title {
+		font-size: 100px;
+		text-transform: uppercase;
+		font-weight: 100;
+	}
 }

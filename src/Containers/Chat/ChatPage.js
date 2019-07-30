@@ -16,7 +16,8 @@ class ChatPage extends Component {
 		securityToken: '',
 		username: '',
 		message: '',
-		messages: []
+		messages: [],
+		numSignedIn: 0
 	}
 
 	componentDidMount = () => {}
@@ -27,7 +28,8 @@ class ChatPage extends Component {
 	onChange = (e) => {
 		const { name, value } = e.target;
 		this.setState({
-			[name]: value
+			[name]: value,
+			error: false
 		});
 	}
 
@@ -40,9 +42,9 @@ class ChatPage extends Component {
 	}
 
 	/**
-	 * perform all that needs to happen on sign in.
-	 * This includes setting logged in state and subscibing
-	 * to messages
+	 * start up socket connection and subscribe to
+	 * socket events for disconnect and error then tries to
+	 * connect to server by logging in user
 	 */
 	connectSocketsAndLogin = () => {
 
@@ -69,25 +71,42 @@ class ChatPage extends Component {
 		}
 	}
 
-	signIn = (data) => {
+	/**
+	 * checks for errors, sets state, and subscribes to socket events
+	 * @param  {String} error       error message from server
+	 * @param  {String} token       security token for user
+	 * @param  {Number} numSignedIn number of active users in chat
+	 * @param  {String} username    signed in user
+	 */
+	signIn = ({ error, token, numSignedIn, username }) => {
 
-		if (data.error) {
-			this.setState({ error: data.error });
+		if (error) {
+			this.setState({ error });
 			return;
 		}
 
-		this.setState({ loggedin: true });
-		this.setState({ securityToken: data.token });
+		this.setState({
+			loggedin: true,
+			securityToken: token,
+			numSignedIn: parseInt(numSignedIn)
+		});
 
 		this.socket.on('USER_CONNECTED', (data) => {
+			if (data.username !== username) {
+				this.setState({ numSignedIn: this.state.numSignedIn + 1 });
+			}
 			this.addMessage({ connected: data.username });
 		});
 
 		this.socket.on('USER_DISCONNECTED', (data) => {
+			if (data.username !== username) {
+				this.setState({ numSignedIn: this.state.numSignedIn - 1 });
+			}
 			this.addMessage({ disconnected: data.username });
 		});
 
 		this.socket.on('RECEIVE_MESSAGE', (data) => {
+			console.log('data', data);
 			this.addMessage({ ...data, encrypted: true });
 		});
 	}
@@ -157,6 +176,7 @@ class ChatPage extends Component {
 			messages,
 			message,
 			loggedin,
+			numSignedIn,
 			error
 		} = this.state;
 
@@ -166,7 +186,7 @@ class ChatPage extends Component {
 				{ loggedin > 0 &&
 					<div className={`chat-control`}>
 						<h2 className={`title`}>Current Channel</h2>
-						<p>Username: {username}</p>
+						<p>Your Username: <b>{username}</b> | {numSignedIn - 1} Other Users</p>
 						<MessageList messages={messages} currentUser={username} decrypt={this.decryptMessage} encrypt={this.encryptMessage}/>
 						<ChatForm onSubmit={this.sendMessage} onChange={this.onChange} username={username} message={message}/>
 					</div>

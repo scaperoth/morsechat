@@ -17,9 +17,9 @@ const MessageList = ({ messages, currentUser, decrypt, encrypt }) => {
 	 * @return {[bool, String]}   array of bool result and new user group
 	 */
 	const shouldShowAuthor = (author, userGroup) => {
-		if(author && userGroup === author){
+		if (author && userGroup === author) {
 			showAuthor = false;
-		}else if ( author ){
+		} else if (author) {
 			userGroup = author;
 			showAuthor = true;
 		}
