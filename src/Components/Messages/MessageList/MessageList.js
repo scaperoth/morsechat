@@ -10,12 +10,14 @@ const MessageList = ({ messages, currentUser }) => {
 	return (
 		<div className="message-list">
 			{messages.map((message, idx) => {
+
 				if(message.message && userGroup === message.author){
 					showAuthor = false;
 				}else if ( message.author ){
 					userGroup = message.author;
 					showAuthor = true;
 				}
+
 				return (
 					<div key={idx}>
 						{ message.message && <Message {...message} showAuthor={showAuthor} isAuthor={currentUser === message.author}/>}
